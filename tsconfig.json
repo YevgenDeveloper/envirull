@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "declaration": true,
+    "jsx": "react",
+    "skipLibCheck": true,
+    "strictNullChecks": true
+  }
+}

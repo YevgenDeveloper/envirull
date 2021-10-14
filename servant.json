@@ -1,0 +1,25 @@
+{
+  "package": "envfull",
+  "target": "node",
+  "entry": "./src/index",
+  "src": [
+    "src/**/*"
+  ],
+  "tests": [
+    "tests/**/*"
+  ],
+  "clean": [
+    "js.map"
+  ],
+  "resolve": [
+    "ts",
+    "tsx"
+  ],
+  "output": {
+    "filename": "index.js",
+    "directory": "./dist"
+  },
+  "modules": [
+    "./"
+  ]
+}
