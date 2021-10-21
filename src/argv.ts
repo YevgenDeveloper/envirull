@@ -1,50 +1,82 @@
-const NO_PARSE_AFTER = "--";
-const OPT_START_WITH_EQUAL = /^--.+=/;
-const OPT_WIDTH_EQUAL = /^--([^=]+)=([\s\S]*)$/;
-export type ParsedArg = string | boolean | number;
+import * as data from "./data";
+import * as utils from "./utils";
 export type ParsedArgs = {
-	[key: string]: ParsedArg | Array<ParsedArg>;
-	_: Array<string>;
+	$: data.ArgItems;
+	_: Array<data.ArgValue>;
+	[data.NO_PARSE_AFTER]: Array<string>;
 }
-export default function parse(args: Array<string>): ParsedArgs {
-	const argv: ParsedArgs = { _: [] };
-	const [toParse, rawArgs] = noParseSplit(args);
+function createParsedArgs(): ParsedArgs {
+	return {
+		$: {},
+		_: [],
+		[data.NO_PARSE_AFTER]: []
+	}
+}
+export function parse(args: Array<string>, opts: data.EnvfullOptions = {}): ParsedArgs {
+	const [parseArgs, rawArgs] = noParseSplit(args);
+	const argv = parseArrayOfArgv(parseArgs, opts);
+	saveRawArgs(argv, rawArgs);
 	return argv;
 }
 function noParseSplit(args: Array<string>): [Array<string>, Array<string>] {
-	if (args.indexOf(NO_PARSE_AFTER) !== -1) {
+	if (args.indexOf(data.NO_PARSE_AFTER) !== -1) {
 		return [
-			args.slice(args.indexOf(NO_PARSE_AFTER) + 1),
+			args.slice(args.indexOf(data.NO_PARSE_AFTER) + 1),
 			args.slice(0, args.indexOf('--'))
 		];
 	}
 	return [args, []];
 }
-function parseArrayOfArgv(args: Array<string>) {
+function parseArrayOfArgv(args: Array<string>, opts: data.EnvfullOptions): ParsedArgs {
+	const argv = createParsedArgs();
 	args.forEach((arg) => {
+		const pair =
+			processOptionWithEqualValue(arg, opts) ||
+			processOptionAsBooleanValue(arg, opts) ||
+			processOptionAsSwitchValue(arg, opts);
+		pair && applyVariable(argv, pair[0], utils.loadValue(opts, pair[0], pair[1]));
+		!pair && applyItems(argv, arg);
 	});
+	return argv;
 }
-function isOptionWithEqualValue(arg: string) {
-	if (!OPT_START_WITH_EQUAL.test(arg)) {
-	}
-	const matched = arg.match(OPT_WIDTH_EQUAL)!;
-	const [key, value] = [matched[1], matched[2]];
-	if (flags.bools[key]) {
-		value = value !== 'false';
-	}
-	setArg(key, value, arg);
+function saveRawArgs(argv: ParsedArgs, rawArgs: Array<string>) {
+	argv[data.NO_PARSE_AFTER] = rawArgs;
 }
-function asTyped(value: string): ParsedArg {
-	if (isNumber(value)) {
-		return Number(value);
+function processOptionWithEqualValue(arg: string, opts: data.EnvfullOptions): [string, string] | null {
+	if (!data.OPT_START_WITH_EQUAL.test(arg)) {
+		return null;
 	}
+	const matched = arg.match(data.OPT_WITH_EQUAL)!;
+	return [
+		utils.loadKey(opts, matched[1]),
+		matched[2]
+	];
 }
-function isNumber(value: any): boolean {
-	if (typeof value === 'number') {
-		return true;
+function processOptionAsBooleanValue(arg: string, opts: data.EnvfullOptions): [string, string] | null {
+	if (!data.OPT_START_BOOLEAN.test(arg)) {
+		return null;
 	}
-	if (/^0x[0-9a-f]+$/i.test(value)) {
-		return true;
+	const matched = arg.match(data.OPT_BOOLEAN)!;
+	return [
+		utils.loadKey(opts, matched[1]),
+		true.toString()
+	];
+}
+function processOptionAsSwitchValue(arg: string, opts: data.EnvfullOptions): [string, string] | null {
+	if (!data.OPT_START_SWITCH.test(arg)) {
+		return null;
 	}
-	return /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(e[-+]?\d+)?$/.test(value);
+	const matched = arg.match(data.OPT_SWITCH)!;
+	return [
+		utils.loadKey(opts, matched[1]),
+		true.toString()
+	];
+}
+function applyVariable(argv: ParsedArgs, keyString: string, value: data.ArgValue | Array<data.ArgValue>) {
+	const [where, key] = utils.loadWhere(argv, keyString);
+	where[key] = utils.value(where[key], value);
+}
+function applyItems(argv: ParsedArgs, valueString: string) {
+	const value = utils.loadItem(valueString);
+	argv._.push(value);
 }
