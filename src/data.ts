@@ -6,6 +6,10 @@ export const OPT_START_BOOLEAN = /^--.+/;
 export const OPT_BOOLEAN = /^--(.+)/;
 export const OPT_START_SWITCH = /^-[^-]+/;
 export const OPT_SWITCH = /^-([^-]+)$/;
+export const NEWLINES_MATCH = /\n|\r|\r\n/;
+export const ENV_KEY_VAL = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/;
+export const ENV_NEWLINE = "\n";
+export const ENV_NEWLINES = /\\n/g;
 export type ArgValue = string | boolean | number;
 export type ArgItem = ArgItems | ArgValue | Array<ArgValue>;
 export type ArgItems = {

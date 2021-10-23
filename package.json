@@ -29,10 +29,13 @@
     "clean": "servant clean",
     "build": "servant clean build",
     "rebuild": "servant clean build --changed",
+    "watch": "servant --watch",
+    "production": "servant clean build --production",
     "test": "servant tests",
     "retest": "servant tests --changed",
     "package": "servant clean build publish",
     "publish": "servant clean build publish --production --tag \"latest\"",
+    "preview": "servant --server",
     "make-install": "servant install",
     "make-update": "servant update"
   }
