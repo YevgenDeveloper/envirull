@@ -1,4 +1,5 @@
 import * as data from "./data";
+import {type} from "os";
 export function defaults(opts: data.EnvfullOptions, items: data.ArgItems) {
 	const defaults = opts.defaults || {};
 	Object.keys(defaults).forEach((k) => {
@@ -104,4 +105,21 @@ function asBoolean(value: any): [boolean, boolean] {
 		return [true, value];
 	}
 	return [false, false];
+}
+export function merge(items: Array<data.ArgItems>): data.ArgItems {
+	const merged: data.ArgItems = {};
+	items.forEach((item: data.ArgItems) => {
+		mergeItems(merged, item);
+	});
+	return merged;
+}
+function mergeItems(into: data.ArgItems, from: data.ArgItems) {
+	Object.keys(from).forEach((key) => {
+		if (typeof from[key] === "object" && !Array.isArray(from[key])) {
+			into[key] = into[key] || {};
+			mergeItems(into[key] as data.ArgItems, from[key] as data.ArgItems);
+		} else {
+			into[key] = from[key] as data.ArgItems;
+		}
+	});
 }

@@ -14,7 +14,7 @@ function createParsedEnv(): ParsedEnv {
 }
 export function parse(content: string | Buffer, opts: data.EnvfullOptions = {}): ParsedEnv {
 	const env = createParsedEnv();
-	content.toString().split(data.NEWLINES_MATCH).forEach(function (line, idx) {
+	content.toString().split(data.NEWLINES_MATCH).forEach(function (line) {
 		const attrs = line.match(data.ENV_KEY_VAL);
 		if (attrs != null) {
 			let [stringKey, val] = [attrs[1], attrs[2] || ""];

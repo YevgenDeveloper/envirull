@@ -13,7 +13,7 @@ export const ENV_NEWLINES = /\\n/g;
 export type ArgValue = string | boolean | number;
 export type ArgItem = ArgItems | ArgValue | Array<ArgValue>;
 export type ArgItems = {
-	[key: string]: ArgItem;
+	[key: string]: ArgItems | ArgItem;
 };
 export interface EnvfullOptions {
 	strings?: Array<string>;
