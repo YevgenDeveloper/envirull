@@ -1,5 +1,4 @@
 import * as data from "./data";
-import {type} from "os";
 export function defaults(opts: data.EnvfullOptions, items: data.ArgItems) {
 	const defaults = opts.defaults || {};
 	Object.keys(defaults).forEach((k) => {

@@ -17,12 +17,8 @@ function createParsedConfig(type: SupportedType): ParsedConfig {
 }
 export function parse(type: SupportedType, content: string, opts: data.EnvfullOptions = {}): ParsedConfig {
 	const config = createParsedConfig(type);
-	switch (type) {
-		case SupportedType.JSON:
-			parseJson(config, content, opts);
-			break;
-		default:
-			break;
+	if (type === SupportedType.JSON) {
+		return parseJson(config, content, opts);
 	}
 	return config;
 }
