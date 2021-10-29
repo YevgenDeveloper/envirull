@@ -15,10 +15,12 @@ export function value(oldValue: data.ArgItem | undefined, value: data.ArgValue |
 	if (Array.isArray(oldValue) && Array.isArray(value)) {
 		const arr = oldValue as Array<data.ArgValue>;
 		arr.concat(value as Array<data.ArgValue>);
+		return arr;
 	}
 	if (Array.isArray(oldValue)) {
 		const arr = oldValue as Array<data.ArgValue>;
 		arr.push(value as data.ArgValue);
+		return arr;
 	}
 	if (!Array.isArray(oldValue) && Array.isArray(value)) {
 		const arr = value as Array<data.ArgValue>;
@@ -57,10 +59,10 @@ export function loadValue(opts: data.EnvfullOptions, key: string, value: string)
 		return [asTyped(value)];
 	}
 	if (opts.booleans && opts.booleans.indexOf(key) >= 0) {
-		return asBoolean(value)[0];
+		return asBoolean(value)[1];
 	}
 	if (opts.numbers && opts.numbers.indexOf(key) >= 0) {
-		return asNumber(value)[0];
+		return asNumber(value)[1];
 	}
 	if (opts.strings && opts.strings.indexOf(key) >= 0) {
 		return value;

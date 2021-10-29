@@ -2,6 +2,7 @@ export const KEY_SEPARATOR = ".";
 export const NO_PARSE_AFTER = "--";
 export const OPT_START_WITH_EQUAL = /^--.+=/;
 export const OPT_WITH_EQUAL = /^--([^=]+)=([\s\S]*)$/;
+export const OPT_START_FLAG = /^-/;
 export const OPT_START_BOOLEAN = /^--.+/;
 export const OPT_BOOLEAN = /^--(.+)/;
 export const OPT_START_SWITCH = /^-[^-]+/;
