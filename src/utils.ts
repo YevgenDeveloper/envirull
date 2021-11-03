@@ -65,7 +65,7 @@ export function loadValue(opts: data.EnvfullOptions, key: string, value: string)
 		return asNumber(value)[1];
 	}
 	if (opts.strings && opts.strings.indexOf(key) >= 0) {
-		return value;
+		return value.toString();
 	}
 	return asTyped(value);
 }

@@ -22,6 +22,20 @@ export function parse(type: SupportedType, content: string, opts: data.EnvfullOp
 	}
 	return config;
 }
+export function load(pth: string | undefined, opts: data.EnvfullOptions = {}): ParsedConfig {
+	if (!pth) {
+		return createParsedConfig(SupportedType.JSON);
+	}
+	const configPath = path.resolve(pth);
+	const configType = getType(path.extname(configPath));
+	if (configType) {
+		const data = loadData(configPath);
+		if (data !== null) {
+			return parse(configType, data, opts);
+		}
+	}
+	return createParsedConfig(SupportedType.JSON);
+}
 function parseJson(config: ParsedConfig, content: string, opts: data.EnvfullOptions = {}): ParsedConfig {
 	const json = toJson(content);
 	parseProp("", json, (stringKey: string, value: any) => {
@@ -54,19 +68,12 @@ function toJson(content: string): Object {
 		return {};
 	}
 }
-export function load(pth: string | undefined, opts: data.EnvfullOptions = {}): ParsedConfig {
-	if (!pth) {
-		return createParsedConfig(SupportedType.JSON);
+function getType(ext: string): SupportedType | null {
+	const extension = ext.toLowerCase();
+	if (extension === ".json") {
+		return SupportedType.JSON;
 	}
-	const configPath = path.resolve(pth);
-	const configType = path.extname(configPath).toLowerCase() as SupportedType;
-	if (SupportedType[configType]) {
-		const data = loadData(configPath);
-		if (data !== null) {
-			return parse(configType, data, opts);
-		}
-	}
-	return createParsedConfig(SupportedType.JSON);
+	return null;
 }
 function loadData(path: string): string | null {
 	let data: string | null;
