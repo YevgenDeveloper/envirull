@@ -16,7 +16,7 @@ function createEnvfullVars(items: data.ArgItems, rest: Array<data.ArgValue>, aft
 		[data.NO_PARSE_AFTER]: after
 	}
 }
-export default function envfull(process: Process, options: data.EnvfullOptions = {}): (config?: string) => EnvfullVars {
+function envfull(process: Process, options: data.EnvfullOptions = {}): (config?: string) => EnvfullVars {
 	const argv = Argv.parse(process.argv.slice(2), options);
 	const env = Env.enrich(Env.load(process.cwd(), options), process.env, options);
 	return (config?: string) => {
@@ -26,3 +26,7 @@ export default function envfull(process: Process, options: data.EnvfullOptions =
 		return createEnvfullVars(items, argv._, argv[data.NO_PARSE_AFTER]);
 	};
 }
+envfull.argv = Argv.parse;
+envfull.env = Env.parse;
+envfull.config = Config.parse;
+export default envfull;
