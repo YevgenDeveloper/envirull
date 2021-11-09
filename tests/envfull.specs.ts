@@ -1,10 +1,11 @@
 import Process = NodeJS.Process;
+import ProcessEnv = NodeJS.ProcessEnv;
 import envfull from "../src/index";
 describe("working with envfull api", () => {
-	function createProcess(cwd: string, argv: Array<string>): Process {
+	function createProcess(cwd: string, argv: Array<string>, env: ProcessEnv = {}): Process {
 		const process = jasmine.createSpyObj<Process>("process", ["cwd"]);
 		process.cwd.and.returnValue(cwd);
-		process.env = {};
+		process.env = env;
 		process.argv = ["node", "index.js", ...argv];
 		return process;
 	}
@@ -54,6 +55,84 @@ describe("working with envfull api", () => {
 				c: 1,
 			});
 			expect(data._).toEqual(["build", "clean"]);
+			expect(data["--"]).toEqual([]);
+		});
+		it("empty command line arguments with env", () => {
+			const process = createProcess("/path/to/dir", [], {
+				PATH: "/this/is/path;/user/home/bin",
+				NODE_PATH: "/bin/nodejs/node",
+				"TEST.DATABASE.URL": "http:
+				"TEST.DATABASE.PORT": "9123"
+			});
+			const data = envfull(process)();
+			expect(data.$).toEqual({
+				PATH: '/this/is/path;/user/home/bin',
+				NODE_PATH: '/bin/nodejs/node',
+				TEST: {
+					DATABASE: {
+						URL: 'http:
+						PORT: 9123
+					}
+				}
+			});
+			expect(data._).toEqual([]);
+			expect(data["--"]).toEqual([]);
+		});
+		it("empty command line arguments with env and with defaults", () => {
+			const process = createProcess("/path/to/dir", [], {
+				PATH: "/this/is/path;/user/home/bin",
+				NODE_PATH: "/bin/nodejs/node",
+				"TEST.DATABASE.URL": "http:
+				"TEST.DATABASE.PORT": "9123"
+			});
+			const data = envfull(process, {
+				defaults: {
+					"TEST.DATABASE.NAME": "MYDB",
+					"TEST.DATABASE.PORT": 9222
+				}
+			})();
+			expect(data.$).toEqual({
+				PATH: '/this/is/path;/user/home/bin',
+				NODE_PATH: '/bin/nodejs/node',
+				TEST: {
+					DATABASE: {
+						URL: 'http:
+						PORT: 9123,
+						NAME: 'MYDB'
+					}
+				}
+			});
+			expect(data._).toEqual([]);
+			expect(data["--"]).toEqual([]);
+		});
+		it("empty command line arguments with env, with defaults and alias", () => {
+			const process = createProcess("/path/to/dir", [], {
+				PATH: "/this/is/path;/user/home/bin",
+				NODE_PATH: "/bin/nodejs/node",
+				"TEST.DATABASE.URL": "http:
+				"TEST.DATABASE.PORT": "9123"
+			});
+			const data = envfull(process, {
+				defaults: {
+					"database.name": "MYDB",
+					"database.port": 9222
+				},
+				aliases: {
+					"database.url": ["TEST.DATABASE.URL"],
+					"database.port": ["TEST.DATABASE.PORT"],
+					"database.name": ["TEST.DATABASE.NAME"]
+				}
+			})();
+			expect(data.$).toEqual({
+				PATH: '/this/is/path;/user/home/bin',
+				NODE_PATH: '/bin/nodejs/node',
+				database: {
+					url: 'http:
+					port: 9123,
+					name: 'MYDB'
+				}
+			});
+			expect(data._).toEqual([]);
 			expect(data["--"]).toEqual([]);
 		});
 	});
