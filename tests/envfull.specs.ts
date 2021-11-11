@@ -1,6 +1,6 @@
 import Process = NodeJS.Process;
 import ProcessEnv = NodeJS.ProcessEnv;
-import envfull from "../src/index";
+import {envfull} from "../src/index";
 describe("working with envfull api", () => {
 	function createProcess(cwd: string, argv: Array<string>, env: ProcessEnv = {}): Process {
 		const process = jasmine.createSpyObj<Process>("process", ["cwd"]);

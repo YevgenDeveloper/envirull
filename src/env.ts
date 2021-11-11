@@ -28,7 +28,7 @@ export function parse(content: string | Buffer, opts: data.EnvfullOptions = {}):
 	return env;
 }
 export function enrich(env: ParsedEnv, currentEnv: ProcessEnv, opts: data.EnvfullOptions = {}): ParsedEnv {
-	Object.keys(currentEnv).forEach((stringKey) => {
+	loadEnvVariables(currentEnv, opts).forEach((stringKey) => {
 		const [where, key] = utils.loadWhere(env.$, utils.loadKey(opts, stringKey));
 		if (currentEnv[stringKey] !== undefined) {
 			where[key] = utils.value(undefined, utils.loadValue(opts, stringKey, currentEnv[stringKey]!));
@@ -42,7 +42,19 @@ export function load(directory: string, opts: data.EnvfullOptions = {}): ParsedE
 	const data = loadData(envPath, envEncoding);
 	return parse(data, opts);
 }
-function removeSingleQuotes(value: string) {
+function loadEnvVariables(currentEnv: ProcessEnv, opts: data.EnvfullOptions = {}): Array<string> {
+	const envVariables = Object.keys(currentEnv);
+	if (opts.env && opts.env.length > 0) {
+		const keys = opts.env.filter((env) => typeof env === "string") as Array<string>;
+		const regex = opts.env.filter((env) => env instanceof RegExp) as Array<RegExp>;
+		return envVariables.filter((env) => keys.indexOf(env) >= 0 || loadEnvPatterns(regex, env));
+	}
+	return envVariables;
+}
+function loadEnvPatterns(regex: Array<RegExp>, env: string): boolean {
+	return regex.some((rg) => Boolean(env.match(rg)));
+}
+function removeSingleQuotes(value: string): string {
 	let val = value;
 	if (val[0] === "'") {
 		val = val.substr(1);
@@ -52,7 +64,7 @@ function removeSingleQuotes(value: string) {
 	}
 	return val;
 }
-function removeDoubleQuotes(value: string) {
+function removeDoubleQuotes(value: string): string {
 	let val = value;
 	if (val[0] === '"') {
 		val = val.substr(1);

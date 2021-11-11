@@ -274,6 +274,55 @@ describe("parsing and loading .env file and ENVIRONMENTAL variables", () => {
 			});
 		});
 	});
+	describe("enrich with ENVIRONMENTAL variables only defined in options", () => {
+		const env = {
+			"MY.DB": "http:
+			"MY.PORT": "3333",
+			"APP.NAME": "MyApp",
+			"APP.DEBUG": "true",
+			"PATH": "aaa;bbb",
+			"NODE_PATH": "/nodejs/bin"
+		};
+		let options: EnvfullOptions;
+		beforeEach(() => {
+			options = {
+				env: ["MY.DB", "MY.PORT", /APP\.[a-zA-Z0-9]/g],
+				aliases: {
+					"database.url": ["MY.DB"],
+					"database.port": ["MY.PORT"]
+				}
+			};
+		});
+		it("empty content parse", () => {
+			const parsed = enrich(parse(""), env, options);
+			expect(parsed.$).toEqual({
+				database: {
+					url: 'http:
+					port: 3333
+				},
+				APP: {
+					NAME: 'MyApp',
+					DEBUG: true
+				}
+			});
+		});
+		it("filled content parse and preserver env variables not in file", () => {
+			const parsed = enrich(parse(join([
+				"database.url='http:
+				"database.port=9999"
+			])), env, options);
+			expect(parsed.$).toEqual({
+				database: {
+					url: 'http:
+					port: 3333
+				},
+				APP: {
+					NAME: 'MyApp',
+					DEBUG: true
+				}
+			});
+		});
+	});
 	describe("loading env file from path", () => {
 		it("file not exists", () => {
 			spyOn(fs, "readFileSync").and.throwError("not found");

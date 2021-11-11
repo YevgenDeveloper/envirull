@@ -17,6 +17,7 @@ export type ArgItems = {
 	[key: string]: ArgItems | ArgItem;
 };
 export interface EnvfullOptions {
+	env?: Array<string | RegExp>;
 	strings?: Array<string>;
 	numbers?: Array<string>;
 	booleans?: Array<string>;
