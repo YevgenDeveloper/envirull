@@ -57,6 +57,31 @@ describe("working with envfull api", () => {
 			expect(data._).toEqual(["build", "clean"]);
 			expect(data["--"]).toEqual([]);
 		});
+		it("parse command line only with default as object tree and without env", () => {
+			const process = createProcess("/path/to/dir", [
+				"build", "clean", "--db.port", "9587"
+			]);
+			const data = envfull(process, {
+				defaults: {
+					db: {
+						port: 9000,
+						url: "http:
+					},
+					production: false,
+					c: 1
+				}
+			})();
+			expect(data.$).toEqual({
+				db: {
+					port: 9587,
+					url: 'http:
+				},
+				production: false,
+				c: 1,
+			});
+			expect(data._).toEqual(["build", "clean"]);
+			expect(data["--"]).toEqual([]);
+		});
 		it("empty command line arguments with env", () => {
 			const process = createProcess("/path/to/dir", [], {
 				PATH: "/this/is/path;/user/home/bin",

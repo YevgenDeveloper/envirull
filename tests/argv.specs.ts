@@ -100,6 +100,35 @@ describe("parsing of arguments from command line", () => {
 			expect(parsed["--"]).toEqual([]);
 		});
 	});
+	describe("with nested alias option", () => {
+		let options: EnvfullOptions;
+		beforeEach(() => {
+			options = {
+				aliases: {
+					"build": ["b", "r", "m"],
+					db: {
+						port: ["dbp"],
+						url: ["dbu"]
+					},
+					"app.name": ["n"]
+				}
+			};
+		});
+		it("parse command line 'b --n=boop --dbp 9000 --dbu http:
+			const parsed = parse("b --n=boop --dbp 9000 --dbu http:
+			expect(parsed.$).toEqual({
+				app: {
+					name: 'boop'
+				},
+				db: {
+					port: 9000,
+					url: 'http:
+				}
+			});
+			expect(parsed._).toEqual(["build"]);
+			expect(parsed["--"]).toEqual([]);
+		});
+	});
 	describe("with forced types behaviour option", () => {
 		let options: EnvfullOptions;
 		beforeEach(() => {

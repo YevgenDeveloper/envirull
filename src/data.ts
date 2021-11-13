@@ -22,10 +22,12 @@ export interface EnvfullOptions {
 	numbers?: Array<string>;
 	booleans?: Array<string>;
 	arrays?: Array<string>;
-	aliases?: {
-		[key: string]: Array<string>;
-	};
-	defaults?: {
-		[key: string]: any;
-	};
+	aliases?: Aliases;
+	defaults?: Defaults;
+}
+export type Aliases = {
+	[key: string]: Aliases | Array<string>;
+}
+export type Defaults = {
+	[key: string]: Defaults | number | boolean | string;
 }
