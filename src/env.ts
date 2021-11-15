@@ -12,7 +12,7 @@ function createParsedEnv(): ParsedEnv {
 		$: {}
 	}
 }
-export function parse(content: string | Buffer, opts: data.EnvfullOptions = {}): ParsedEnv {
+export function parse<T>(content: string | Buffer, opts: data.EnvfullOptions<T> = {}): ParsedEnv {
 	const env = createParsedEnv();
 	content.toString().split(data.NEWLINES_MATCH).forEach(function (line) {
 		const attrs = line.match(data.ENV_KEY_VAL);
@@ -27,7 +27,7 @@ export function parse(content: string | Buffer, opts: data.EnvfullOptions = {}):
 	});
 	return env;
 }
-export function enrich(env: ParsedEnv, currentEnv: ProcessEnv, opts: data.EnvfullOptions = {}): ParsedEnv {
+export function enrich<T>(env: ParsedEnv, currentEnv: ProcessEnv, opts: data.EnvfullOptions<T> = {}): ParsedEnv {
 	loadEnvVariables(currentEnv, opts).forEach((stringKey) => {
 		const [where, key] = utils.loadWhere(env.$, utils.loadKey(opts, stringKey));
 		if (currentEnv[stringKey] !== undefined) {
@@ -36,13 +36,13 @@ export function enrich(env: ParsedEnv, currentEnv: ProcessEnv, opts: data.Envful
 	});
 	return env;
 }
-export function load(directory: string, opts: data.EnvfullOptions = {}): ParsedEnv {
+export function load<T>(directory: string, opts: data.EnvfullOptions<T> = {}): ParsedEnv {
 	const envPath = path.resolve(directory, file);
 	const envEncoding = 'utf8';
 	const data = loadData(envPath, envEncoding);
 	return parse(data, opts);
 }
-function loadEnvVariables(currentEnv: ProcessEnv, opts: data.EnvfullOptions = {}): Array<string> {
+function loadEnvVariables<T>(currentEnv: ProcessEnv, opts: data.EnvfullOptions<T> = {}): Array<string> {
 	const envVariables = Object.keys(currentEnv);
 	if (opts.env && opts.env.length > 0) {
 		const keys = opts.env.filter((env) => typeof env === "string") as Array<string>;

@@ -16,18 +16,18 @@ export type ArgItem = ArgItems | ArgValue | Array<ArgValue>;
 export type ArgItems = {
 	[key: string]: ArgItems | ArgItem;
 };
-export interface EnvfullOptions {
+export interface EnvfullOptions<T> {
 	env?: Array<string | RegExp>;
 	strings?: Array<string>;
 	numbers?: Array<string>;
 	booleans?: Array<string>;
 	arrays?: Array<string>;
-	aliases?: Aliases;
-	defaults?: Defaults;
+	aliases?: Aliases<T>;
+	defaults?: Defaults<T>;
 }
-export type Aliases = {
-	[key: string]: Aliases | Array<string>;
+export type Aliases<T> = Partial<T> | {
+	[key: string]: Aliases<T> | Array<string>;
 }
-export type Defaults = {
-	[key: string]: Defaults | number | boolean | string;
+export type Defaults<T = number | boolean | string> = Partial<T> | {
+	[key: string]: Defaults<T> | T;
 }

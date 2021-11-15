@@ -12,7 +12,7 @@ function createParsedArgs(): ParsedArgs {
 		[data.NO_PARSE_AFTER]: []
 	}
 }
-export function parse(args: Array<string>, opts: data.EnvfullOptions = {}): ParsedArgs {
+export function parse<T>(args: Array<string>, opts: data.EnvfullOptions<T> = {}): ParsedArgs {
 	const [parseArgs, rawArgs] = noParseSplit(args);
 	const argv = parseArrayOfArgv(parseArgs, opts);
 	saveRawArgs(argv, rawArgs);
@@ -27,7 +27,7 @@ function noParseSplit(args: Array<string>): [Array<string>, Array<string>] {
 	}
 	return [args, []];
 }
-function parseArrayOfArgv(args: Array<string>, opts: data.EnvfullOptions): ParsedArgs {
+function parseArrayOfArgv<T>(args: Array<string>, opts: data.EnvfullOptions<T>): ParsedArgs {
 	const argv = createParsedArgs();
 	for (let i = 0; i < args.length; i++) {
 		const current = args[i];
@@ -46,7 +46,7 @@ function parseArrayOfArgv(args: Array<string>, opts: data.EnvfullOptions): Parse
 function saveRawArgs(argv: ParsedArgs, rawArgs: Array<string>) {
 	argv[data.NO_PARSE_AFTER] = rawArgs;
 }
-function processOptionWithEqualValue(arg: string, opts: data.EnvfullOptions): [string, string] | null {
+function processOptionWithEqualValue<T>(arg: string, opts: data.EnvfullOptions<T>): [string, string] | null {
 	if (!data.OPT_START_WITH_EQUAL.test(arg)) {
 		return null;
 	}
@@ -56,7 +56,7 @@ function processOptionWithEqualValue(arg: string, opts: data.EnvfullOptions): [s
 		matched[2]
 	];
 }
-function processOptionAsBooleanValue(arg: string, next: string | undefined, opts: data.EnvfullOptions): [string, string] | null {
+function processOptionAsBooleanValue<T>(arg: string, next: string | undefined, opts: data.EnvfullOptions<T>): [string, string] | null {
 	if (!data.OPT_START_BOOLEAN.test(arg) || !nextIsSwitchOrOption(next)) {
 		return null;
 	}
@@ -66,7 +66,7 @@ function processOptionAsBooleanValue(arg: string, next: string | undefined, opts
 		true.toString()
 	];
 }
-function processOptionAsTypedValue(arg: string, next: string | undefined, opts: data.EnvfullOptions, move: () => void): [string, string] | null {
+function processOptionAsTypedValue<T>(arg: string, next: string | undefined, opts: data.EnvfullOptions<T>, move: () => void): [string, string] | null {
 	if (!data.OPT_START_BOOLEAN.test(arg) || nextIsSwitchOrOption(next)) {
 		return null;
 	}
@@ -77,7 +77,7 @@ function processOptionAsTypedValue(arg: string, next: string | undefined, opts: 
 		next!
 	];
 }
-function processSwitchAsBooleanValue(arg: string, next: string | undefined, opts: data.EnvfullOptions): [string, string] | null {
+function processSwitchAsBooleanValue<T>(arg: string, next: string | undefined, opts: data.EnvfullOptions<T>): [string, string] | null {
 	if (!data.OPT_START_SWITCH.test(arg) || !nextIsSwitchOrOption(next)) {
 		return null;
 	}
@@ -87,7 +87,7 @@ function processSwitchAsBooleanValue(arg: string, next: string | undefined, opts
 		true.toString()
 	];
 }
-function processSwitchAsTypedValue(arg: string, next: string | undefined, opts: data.EnvfullOptions, move: () => void): [string, string] | null {
+function processSwitchAsTypedValue<T>(arg: string, next: string | undefined, opts: data.EnvfullOptions<T>, move: () => void): [string, string] | null {
 	if (!data.OPT_START_SWITCH.test(arg) || nextIsSwitchOrOption(next)) {
 		return null;
 	}

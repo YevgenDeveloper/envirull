@@ -1,5 +1,5 @@
 import * as data from "./data";
-export function defaults(opts: data.EnvfullOptions, items: data.ArgItems) {
+export function defaults<T = data.ArgItems>(opts: data.EnvfullOptions<T>, items: T) {
 	const defaults = loadDefaults(opts.defaults || {});
 	Object.keys(defaults).forEach((k) => {
 		const [where, key] = loadWhere(items, loadKey(opts, k));
@@ -29,17 +29,17 @@ export function value(oldValue: data.ArgItem | undefined, value: data.ArgValue |
 	}
 	return [oldValue, value] as Array<data.ArgValue>;
 }
-export function loadWhere(items: data.ArgItems, keyString: string): [data.ArgItems, string] {
+export function loadWhere<T>(items: T, keyString: string): [T, string] {
 	const keys = keyString.split(data.KEY_SEPARATOR);
 	const key = keys[keys.length - 1];
 	let o = items;
 	keys.slice(0, -1).forEach(function (key) {
 		o[key] = o[key] || {};
-		o = o[key] as data.ArgItems;
+		o = o[key] as T;
 	});
 	return [o, key];
 }
-export function loadKey(opts: data.EnvfullOptions, key: string): string {
+export function loadKey<T>(opts: data.EnvfullOptions<T>, key: string): string {
 	const aliases = loadAliases(opts.aliases || {});
 	const isMain = Boolean(aliases[key]);
 	if (isMain) {
@@ -54,7 +54,7 @@ export function loadKey(opts: data.EnvfullOptions, key: string): string {
 	}
 	return key;
 }
-export function loadValue(opts: data.EnvfullOptions, key: string, value: string): data.ArgValue | Array<data.ArgValue> {
+export function loadValue<T>(opts: data.EnvfullOptions<T>, key: string, value: string): data.ArgValue | Array<data.ArgValue> {
 	if (opts.arrays && opts.arrays.indexOf(key) >= 0) {
 		return [asTyped(value)];
 	}
@@ -107,14 +107,14 @@ function asBoolean(value: any): [boolean, boolean] {
 	}
 	return [false, false];
 }
-export function merge(items: Array<data.ArgItems>): data.ArgItems {
-	const merged: data.ArgItems = {};
+export function merge<T = data.ArgItems>(items: Array<data.ArgItems>): T {
+	const merged: T = {} as T;
 	items.forEach((item: data.ArgItems) => {
 		mergeItems(merged, item);
 	});
 	return merged;
 }
-function mergeItems(into: data.ArgItems, from: data.ArgItems) {
+function mergeItems<T = data.ArgItems>(into: T, from: data.ArgItems) {
 	Object.keys(from).forEach((key) => {
 		if (typeof from[key] === "object" && !Array.isArray(from[key])) {
 			into[key] = into[key] || {};
@@ -127,13 +127,13 @@ function mergeItems(into: data.ArgItems, from: data.ArgItems) {
 type AliasesMap = {
 	[key: string]: Array<string>;
 }
-function loadAliases(aliases: data.Aliases, items: AliasesMap = {}, parents: Array<string> = []): AliasesMap {
+function loadAliases<T>(aliases: data.Aliases<T>, items: AliasesMap = {}, parents: Array<string> = []): AliasesMap {
 	Object.keys(aliases).forEach((key) => {
 		if (Array.isArray(aliases[key])) {
 			const fullKey = [...parents, key].join(data.KEY_SEPARATOR);
 			items[fullKey] = aliases[key] as Array<string>;
 		} else {
-			loadAliases(aliases[key] as data.Aliases, items, [...parents, key]);
+			loadAliases(aliases[key] as data.Aliases<T>, items, [...parents, key]);
 		}
 	});
 	return items;
@@ -141,13 +141,13 @@ function loadAliases(aliases: data.Aliases, items: AliasesMap = {}, parents: Arr
 type DefaultsMap = {
 	[key: string]: number | boolean | string;
 }
-function loadDefaults(defaults1: data.Defaults, items: DefaultsMap = {}, parents: Array<string> = []): DefaultsMap {
+function loadDefaults<T>(defaults1: data.Defaults<T>, items: DefaultsMap = {}, parents: Array<string> = []): DefaultsMap {
 	Object.keys(defaults1).forEach((key) => {
 		if (typeof defaults1[key] !== "object" || Array.isArray(defaults1[key])) {
 			const fullKey = [...parents, key].join(data.KEY_SEPARATOR);
 			items[fullKey] = defaults1[key] as any;
 		} else {
-			loadDefaults(defaults1[key] as data.Defaults, items, [...parents, key]);
+			loadDefaults(defaults1[key] as data.Defaults<T>, items, [...parents, key]);
 		}
 	});
 	return items;

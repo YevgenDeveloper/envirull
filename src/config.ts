@@ -15,14 +15,14 @@ function createParsedConfig(type: SupportedType): ParsedConfig {
 		type: type
 	}
 }
-export function parse(type: SupportedType, content: string, opts: data.EnvfullOptions = {}): ParsedConfig {
+export function parse<T>(type: SupportedType, content: string, opts: data.EnvfullOptions<T> = {}): ParsedConfig {
 	const config = createParsedConfig(type);
 	if (type === SupportedType.JSON) {
 		return parseJson(config, content, opts);
 	}
 	return config;
 }
-export function load(pth: string | undefined, opts: data.EnvfullOptions = {}): ParsedConfig {
+export function load<T>(pth: string | undefined, opts: data.EnvfullOptions<T> = {}): ParsedConfig {
 	if (!pth) {
 		return createParsedConfig(SupportedType.JSON);
 	}
@@ -36,7 +36,7 @@ export function load(pth: string | undefined, opts: data.EnvfullOptions = {}): P
 	}
 	return createParsedConfig(SupportedType.JSON);
 }
-function parseJson(config: ParsedConfig, content: string, opts: data.EnvfullOptions = {}): ParsedConfig {
+function parseJson<T>(config: ParsedConfig, content: string, opts: data.EnvfullOptions<T> = {}): ParsedConfig {
 	const json = toJson(content);
 	parseProp("", json, (stringKey: string, value: any) => {
 		const [where, key] = utils.loadWhere(config.$, utils.loadKey(opts, stringKey));
