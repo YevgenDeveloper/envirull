@@ -34,7 +34,7 @@ describe("parsing and loading .env file and ENVIRONMENTAL variables", () => {
 		});
 	});
 	describe("parse with alias options", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				aliases: {
@@ -61,7 +61,7 @@ describe("parsing and loading .env file and ENVIRONMENTAL variables", () => {
 		});
 	});
 	describe("parse with forced types behaviour option", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				arrays: ["only"],
@@ -238,7 +238,7 @@ describe("parsing and loading .env file and ENVIRONMENTAL variables", () => {
 			"PATH": "aaa;bbb",
 			"NODE_PATH": "/nodejs/bin"
 		};
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				aliases: {
@@ -283,7 +283,7 @@ describe("parsing and loading .env file and ENVIRONMENTAL variables", () => {
 			"PATH": "aaa;bbb",
 			"NODE_PATH": "/nodejs/bin"
 		};
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				env: ["MY.DB", "MY.PORT", /APP\.[a-zA-Z0-9]/g],

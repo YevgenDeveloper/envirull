@@ -39,7 +39,7 @@ describe("loading and parsing config file", () => {
 		});
 	});
 	describe("with alias option", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				aliases: {
@@ -67,7 +67,7 @@ describe("loading and parsing config file", () => {
 		});
 	});
 	describe("with forced types behaviour option", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				arrays: ["only"],

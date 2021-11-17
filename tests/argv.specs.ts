@@ -80,7 +80,7 @@ describe("parsing of arguments from command line", () => {
 		});
 	});
 	describe("with alias option", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				aliases: {
@@ -101,7 +101,7 @@ describe("parsing of arguments from command line", () => {
 		});
 	});
 	describe("with nested alias option", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				aliases: {
@@ -130,7 +130,7 @@ describe("parsing of arguments from command line", () => {
 		});
 	});
 	describe("with forced types behaviour option", () => {
-		let options: EnvfullOptions;
+		let options: EnvfullOptions<{}>;
 		beforeEach(() => {
 			options = {
 				arrays: ["only"],

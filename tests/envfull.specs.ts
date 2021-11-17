@@ -38,7 +38,7 @@ describe("working with envfull api", () => {
 			const process = createProcess("/path/to/dir", [
 				"build", "clean", "--db.port", "9587"
 			]);
-			const data = envfull(process, {
+			const data = envfull<{}>(process, {
 				defaults: {
 					"db.port": 9000,
 					"db.url": "http:
@@ -61,7 +61,7 @@ describe("working with envfull api", () => {
 			const process = createProcess("/path/to/dir", [
 				"build", "clean", "--db.port", "9587"
 			]);
-			const data = envfull(process, {
+			const data = envfull<{}>(process, {
 				defaults: {
 					db: {
 						port: 9000,
@@ -110,7 +110,7 @@ describe("working with envfull api", () => {
 				"TEST.DATABASE.URL": "http:
 				"TEST.DATABASE.PORT": "9123"
 			});
-			const data = envfull(process, {
+			const data = envfull<{}>(process, {
 				defaults: {
 					"TEST.DATABASE.NAME": "MYDB",
 					"TEST.DATABASE.PORT": 9222
@@ -137,7 +137,7 @@ describe("working with envfull api", () => {
 				"TEST.DATABASE.URL": "http:
 				"TEST.DATABASE.PORT": "9123"
 			});
-			const data = envfull(process, {
+			const data = envfull<{}>(process, {
 				defaults: {
 					"database.name": "MYDB",
 					"database.port": 9222

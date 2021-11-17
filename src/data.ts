@@ -14,7 +14,7 @@ export const ENV_NEWLINES = /\\n/g;
 export type ArgValue = string | boolean | number;
 export type ArgItem = ArgItems | ArgValue | Array<ArgValue>;
 export type ArgItems = {
-	[key: string]: ArgItems | ArgItem;
+	[key: string]: ArgItem;
 };
 export interface EnvfullOptions<T> {
 	env?: Array<string | RegExp>;
@@ -28,6 +28,10 @@ export interface EnvfullOptions<T> {
 export type Aliases<T> = Partial<T> | {
 	[key: string]: Aliases<T> | Array<string>;
 }
-export type Defaults<T = number | boolean | string> = Partial<T> | {
-	[key: string]: Defaults<T> | T;
+export type Defaults<T = DefaultsDefaults> = RecursivePartial<T>;
+type DefaultsDefaults =  {
+	[key: string]: DefaultsDefaults | number | boolean | string;
 }
+type RecursivePartial<T> = {
+	[P in keyof T]?: RecursivePartial<T[P]>;
+};
