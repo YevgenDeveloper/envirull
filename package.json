@@ -22,7 +22,7 @@
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "devDependencies": {
-    "@servant/servant-cli": "^0.1.24",
+    "@servant/servant-cli": "^0.1.25",
     "@types/node": "^12.7.2"
   },
   "scripts": {
