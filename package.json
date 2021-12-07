@@ -21,10 +21,6 @@
   ],
   "main": "src/index.js",
   "types": "src/index.d.ts",
-  "devDependencies": {
-    "@servant/servant-cli": "^0.1.25",
-    "@types/node": "^12.7.2"
-  },
   "scripts": {
     "servant": "servant",
     "clean": "servant clean",
@@ -39,5 +35,9 @@
     "preview": "servant --server",
     "make-install": "servant install",
     "make-update": "servant update"
+  },
+  "devDependencies": {
+    "@servant/servant-cli": "^0.1.25",
+    "@types/node": "^12.7.2"
   }
 }
