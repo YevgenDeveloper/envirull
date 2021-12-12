@@ -1,6 +1,6 @@
 {
   "name": "envfull",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "license": "MIT",
   "author": "Stanislav Hacker",
   "keywords": [
@@ -19,8 +19,8 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "servant": "servant",
     "clean": "servant clean",
@@ -35,9 +35,5 @@
     "preview": "servant --server",
     "make-install": "servant install",
     "make-update": "servant update"
-  },
-  "devDependencies": {
-    "@servant/servant-cli": "^0.1.25",
-    "@types/node": "^12.7.2"
   }
 }
