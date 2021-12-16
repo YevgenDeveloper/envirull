@@ -30,9 +30,9 @@
     "production": "servant clean build --production",
     "test": "servant tests",
     "retest": "servant tests --changed",
-    "package": "servant clean build publish",
-    "publish": "servant clean build publish --production --tag \"latest\"",
     "preview": "servant --server",
+    "make-package": "servant clean build publish",
+    "make-publish": "servant clean build publish --production --tag \"latest\"",
     "make-install": "servant install",
     "make-update": "servant update"
   },
