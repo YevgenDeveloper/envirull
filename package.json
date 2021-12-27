@@ -37,7 +37,7 @@
     "make-update": "servant update"
   },
   "devDependencies": {
-    "@servant/servant-cli": "^0.1.25",
+    "@servant/servant-cli": "^0.1.26",
     "@types/node": "^12.7.2"
   }
 }
