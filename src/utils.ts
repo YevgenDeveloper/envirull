@@ -128,6 +128,9 @@ type AliasesMap = {
 	[key: string]: Array<string>;
 }
 function loadAliases<T>(aliases: data.Aliases<T>, items: AliasesMap = {}, parents: Array<string> = []): AliasesMap {
+	if (!aliases) {
+		return items;
+	}
 	Object.keys(aliases).forEach((key) => {
 		if (Array.isArray(aliases[key])) {
 			const fullKey = [...parents, key].join(data.KEY_SEPARATOR);
@@ -142,8 +145,14 @@ type DefaultsMap = {
 	[key: string]: number | boolean | string;
 }
 function loadDefaults<T>(defaults1: data.Defaults<T>, items: DefaultsMap = {}, parents: Array<string> = []): DefaultsMap {
+	if (defaults1 === undefined) {
+		return items;
+	}
 	Object.keys(defaults1).forEach((key) => {
-		if (typeof defaults1[key] !== "object" || Array.isArray(defaults1[key])) {
+		if (defaults1[key] === null) {
+			const fullKey = [...parents, key].join(data.KEY_SEPARATOR);
+			items[fullKey] = null as any;
+		} else if (typeof defaults1[key] !== "object" || Array.isArray(defaults1[key])) {
 			const fullKey = [...parents, key].join(data.KEY_SEPARATOR);
 			items[fullKey] = defaults1[key] as any;
 		} else {

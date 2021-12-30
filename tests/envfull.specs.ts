@@ -160,5 +160,34 @@ describe("working with envfull api", () => {
 			expect(data._).toEqual([]);
 			expect(data["--"]).toEqual([]);
 		});
+		it("empty command line arguments with env and with defaults and null", () => {
+			const process = createProcess("/path/to/dir", [], {
+				PATH: "/this/is/path;/user/home/bin",
+				NODE_PATH: "/bin/nodejs/node",
+				"TEST.DATABASE.URL": "http:
+				"TEST.DATABASE.PORT": "9123"
+			});
+			const data = envfull<{}>(process, {
+				defaults: {
+					"TEST.DATABASE.NAME": "MYDB",
+					"TEST.DATABASE.PORT": 9222,
+					"TEST.DATABASE.USER": null,
+				}
+			})();
+			expect(data.$).toEqual({
+				PATH: '/this/is/path;/user/home/bin',
+				NODE_PATH: '/bin/nodejs/node',
+				TEST: {
+					DATABASE: {
+						URL: 'http:
+						PORT: 9123,
+						NAME: 'MYDB',
+						USER: null
+					}
+				}
+			});
+			expect(data._).toEqual([]);
+			expect(data["--"]).toEqual([]);
+		});
 	});
 });

@@ -110,7 +110,8 @@ describe("parsing of arguments from command line", () => {
 						port: ["dbp"],
 						url: ["dbu"]
 					},
-					"app.name": ["n"]
+					"app.name": ["n"],
+					prod: null
 				}
 			};
 		});
