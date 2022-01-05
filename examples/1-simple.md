@@ -28,3 +28,14 @@ var res = {
   '--': []
 }
 ```
+ **3** `node index.js --user=shacker --port 9999 -- test hello -s --more`
+```javascript
+var res = {
+  '$': {
+      user: 'shacker',
+      port: 9999
+  },
+  _: [],
+  '--': [ 'test', 'hello', '-s', '--more' ] 
+}
+```
