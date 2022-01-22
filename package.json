@@ -37,14 +37,7 @@
     "make-update": "servant update"
   },
   "devDependencies": {
-    "@servant/servant-cli": "^0.1.26",
+    "@servant/servant-cli": "^0.1.27",
     "@types/node": "^12.7.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.com/stanislavhacker/envfull.git"
-  },
-  "bugs": {
-    "url": "https://gitlab.com/stanislavhacker/envfull/issues"
   }
 }
