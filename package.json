@@ -1,6 +1,6 @@
 {
   "name": "envfull",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "license": "MIT",
   "author": "Stanislav Hacker",
   "keywords": [
@@ -36,15 +36,15 @@
     "make-install": "servant install",
     "make-update": "servant update"
   },
-  "devDependencies": {
-    "@servant/servant-cli": "^0.1.27",
-    "@types/node": "^12.7.2"
-  },
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/stanislavhacker/envfull.git"
   },
   "bugs": {
     "url": "https://gitlab.com/stanislavhacker/envfull/issues"
+  },
+  "devDependencies": {
+    "@servant/servant-cli": "^0.1.27",
+    "@types/node": "^12.7.2"
   }
 }
