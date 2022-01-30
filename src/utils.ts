@@ -14,8 +14,7 @@ export function value(oldValue: data.ArgItem | undefined, value: data.ArgValue |
 	}
 	if (Array.isArray(oldValue) && Array.isArray(value)) {
 		const arr = oldValue as Array<data.ArgValue>;
-		arr.concat(value as Array<data.ArgValue>);
-		return arr;
+		return arr.concat(value as Array<data.ArgValue>);
 	}
 	if (Array.isArray(oldValue)) {
 		const arr = oldValue as Array<data.ArgValue>;

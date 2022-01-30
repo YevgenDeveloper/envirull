@@ -255,6 +255,14 @@ describe("parsing of arguments from command line", () => {
 				expect(parsed._).toEqual([]);
 				expect(parsed["--"]).toEqual([]);
 			});
+			it("parse command line '--only 1 --only 2'", () => {
+				const parsed = parse("--only 1 --only 2".split(" "), options);
+				expect(parsed.$).toEqual({
+					only: [1, 2]
+				});
+				expect(parsed._).toEqual([]);
+				expect(parsed["--"]).toEqual([]);
+			});
 		});
 	});
 });
