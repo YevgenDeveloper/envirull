@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
+## [0.1.12] - 2019-09-23
 ### Changed
  - *FIX*: Force array type repair
 ## [0.1.11] - 2019-08-31
@@ -20,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Support for parsing command line arguments
  - Support for parsing config file `.json` type
  - Support for loading ENV variables from system or from `.env` file
-[Unreleased]: https://gitlab.com/stanislavhacker/envfull/compare/0.1.11...master
+[Unreleased]: https://gitlab.com/stanislavhacker/envfull/compare/0.1.12...master
+[0.1.12]: https://gitlab.com/stanislavhacker/envfull/compare/0.1.11...0.1.12
 [0.1.11]: https://gitlab.com/stanislavhacker/envfull/compare/0.1.10...0.1.11
 [0.1.10]: https://gitlab.com/stanislavhacker/envfull/compare/0.1.9...0.1.10
 [0.1.9]: https://gitlab.com/stanislavhacker/envfull/compare/0.1.8...0.1.9
