@@ -44,7 +44,7 @@
     "url": "https://gitlab.com/stanislavhacker/envfull/issues"
   },
   "devDependencies": {
-    "@servant/servant-cli": "^0.1.27",
+    "@servant/servant-cli": "^0.1.33",
     "@types/node": "^12.7.2"
   }
 }
