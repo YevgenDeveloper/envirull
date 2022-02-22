@@ -78,6 +78,12 @@ describe("parsing of arguments from command line", () => {
 			expect(parsed._).toEqual([]);
 			expect(parsed["--"]).toEqual([]);
 		});
+		it("parse command line '-x-only core'", () => {
+			const parsed = parse("-x-only core".split(" "));
+			expect(parsed.$).toEqual({});
+			expect(parsed._).toEqual(["-x-only"]);
+			expect(parsed["--"]).toEqual([]);
+		});
 	});
 	describe("with alias option", () => {
 		let options: EnvfullOptions<{}>;

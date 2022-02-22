@@ -51,6 +51,9 @@ function processOptionWithEqualValue<T>(arg: string, opts: data.EnvfullOptions<T
 		return null;
 	}
 	const matched = arg.match(data.OPT_WITH_EQUAL)!;
+	if (matched === null) {
+		return null;
+	}
 	return [
 		utils.loadKey(opts, matched[1]),
 		matched[2]
@@ -61,6 +64,9 @@ function processOptionAsBooleanValue<T>(arg: string, next: string | undefined, o
 		return null;
 	}
 	const matched = arg.match(data.OPT_BOOLEAN)!;
+	if (matched === null) {
+		return null;
+	}
 	return [
 		utils.loadKey(opts, matched[1]),
 		true.toString()
@@ -72,6 +78,9 @@ function processOptionAsTypedValue<T>(arg: string, next: string | undefined, opt
 	}
 	move();
 	const matched = arg.match(data.OPT_BOOLEAN)!;
+	if (matched === null) {
+		return null;
+	}
 	return [
 		utils.loadKey(opts, matched[1]),
 		next!
@@ -82,6 +91,9 @@ function processSwitchAsBooleanValue<T>(arg: string, next: string | undefined, o
 		return null;
 	}
 	const matched = arg.match(data.OPT_SWITCH)!;
+	if (matched === null) {
+		return null;
+	}
 	return [
 		utils.loadKey(opts, matched[1]),
 		true.toString()
@@ -93,6 +105,9 @@ function processSwitchAsTypedValue<T>(arg: string, next: string | undefined, opt
 	}
 	move();
 	const matched = arg.match(data.OPT_SWITCH)!;
+	if (matched === null) {
+		return null;
+	}
 	return [
 		utils.loadKey(opts, matched[1]),
 		next!
