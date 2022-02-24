@@ -1,6 +1,6 @@
 {
   "name": "envfull",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "author": "Stanislav Hacker",
   "keywords": [
@@ -44,7 +44,7 @@
     "url": "https://gitlab.com/stanislavhacker/envfull/issues"
   },
   "devDependencies": {
-    "@servant/servant-cli": "^0.1.37",
+    "@servant/servant-cli": "^0.1.42",
     "@types/node": "^12.19.3"
   }
 }
