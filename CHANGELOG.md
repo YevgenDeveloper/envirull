@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
+## [1.0.5] - 2022-11-22
+Results from envfull now contains `env` and `config`. These properties
+contain info about loading from env file or config file.
+ - *DEV*: Added eslint and prettier + format code
 ## [1.0.4] - 2022-07-17
 Update servant version
 ## [1.0.3] - 2020-09-24
@@ -30,7 +34,8 @@ Update dependencies due to security check
  - Support for parsing command line arguments
  - Support for parsing config file `.json` type
  - Support for loading ENV variables from system or from `.env` file
-[Unreleased]: https://gitlab.com/stanislavhacker/envfull/compare/1.0.4...master
+[Unreleased]: https://gitlab.com/stanislavhacker/envfull/compare/1.0.5...master
+[1.0.5]: https://gitlab.com/stanislavhacker/envfull/compare/1.0.4...1.0.5
 [1.0.4]: https://gitlab.com/stanislavhacker/envfull/compare/1.0.3...1.0.4
 [1.0.3]: https://gitlab.com/stanislavhacker/envfull/compare/1.0.2...1.0.3
 [1.0.2]: https://gitlab.com/stanislavhacker/envfull/compare/1.0.1...1.0.2

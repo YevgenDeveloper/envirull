@@ -7,8 +7,13 @@ before_script:
   - npm install
   - npm run servant -- install
 stages:
+  - validate
   - build
   - tests
+validate:
+  stage: validate
+  script:
+    - npm run servant -- validate
 build:
   stage: build
   script:

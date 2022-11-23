@@ -3,19 +3,25 @@ import * as fs from "fs";
 import * as data from "./data";
 import * as utils from "./utils";
 export enum SupportedType {
-	JSON = ".json"
+	JSON = ".json",
 }
 export type ParsedConfig = {
 	$: data.ArgItems;
 	type: SupportedType;
-}
+	used: boolean;
+};
 function createParsedConfig(type: SupportedType): ParsedConfig {
 	return {
 		$: {},
-		type: type
-	}
+		type: type,
+		used: false,
+	};
 }
-export function parse<T>(type: SupportedType, content: string, opts: data.EnvfullOptions<T> = {}): ParsedConfig {
+export function parse<T>(
+	type: SupportedType,
+	content: string,
+	opts: data.EnvfullOptions<T> = {}
+): ParsedConfig {
 	const config = createParsedConfig(type);
 	if (type === SupportedType.JSON) {
 		return parseJson(config, content, opts);
@@ -36,7 +42,11 @@ export function load<T>(pth: string | undefined, opts: data.EnvfullOptions<T> = 
 	}
 	return createParsedConfig(SupportedType.JSON);
 }
-function parseJson<T>(config: ParsedConfig, content: string, opts: data.EnvfullOptions<T> = {}): ParsedConfig {
+function parseJson<T>(
+	config: ParsedConfig,
+	content: string,
+	opts: data.EnvfullOptions<T> = {}
+): ParsedConfig {
 	const json = toJson(content);
 	parseProp("", json, (stringKey: string, value: any) => {
 		const [where, key] = utils.loadWhere(config.$, utils.loadKey(opts, stringKey));
@@ -44,6 +54,7 @@ function parseJson<T>(config: ParsedConfig, content: string, opts: data.EnvfullO
 			where[key] = utils.value(where[key], utils.loadValue(opts, stringKey, value));
 		}
 	});
+	config.used = true;
 	return config;
 }
 function parseProp(parent: string, data: Object, handler: (key: string, value: any) => void) {

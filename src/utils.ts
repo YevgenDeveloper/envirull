@@ -8,7 +8,10 @@ export function defaults<T = data.ArgItems>(opts: data.EnvfullOptions<T>, items:
 		}
 	});
 }
-export function value(oldValue: data.ArgItem | undefined, value: data.ArgValue | Array<data.ArgValue>): data.ArgValue | Array<data.ArgValue> {
+export function value(
+	oldValue: data.ArgItem | undefined,
+	value: data.ArgValue | Array<data.ArgValue>
+): data.ArgValue | Array<data.ArgValue> {
 	if (oldValue === undefined) {
 		return value;
 	}
@@ -53,7 +56,11 @@ export function loadKey<T>(opts: data.EnvfullOptions<T>, key: string): string {
 	}
 	return key;
 }
-export function loadValue<T>(opts: data.EnvfullOptions<T>, key: string, value: string): data.ArgValue | Array<data.ArgValue> {
+export function loadValue<T>(
+	opts: data.EnvfullOptions<T>,
+	key: string,
+	value: string
+): data.ArgValue | Array<data.ArgValue> {
 	if (opts.arrays && opts.arrays.indexOf(key) >= 0) {
 		return [asTyped(value)];
 	}
@@ -82,8 +89,8 @@ function asTyped(value: string): data.ArgValue {
 	}
 	return value;
 }
-function asNumber(value: any): [boolean, number] {
-	if (typeof value === 'number') {
+function asNumber(value: number | string): [boolean, number] {
+	if (typeof value === "number") {
 		return [true, Number(value)];
 	}
 	if (/^0x[0-9a-f]+$/i.test(value)) {
@@ -91,7 +98,7 @@ function asNumber(value: any): [boolean, number] {
 	}
 	return [/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(e[-+]?\d+)?$/.test(value), Number(value)];
 }
-function asBoolean(value: any): [boolean, boolean] {
+function asBoolean(value: number | string | boolean): [boolean, boolean] {
 	if (typeof value === "string") {
 		const val = value.toLowerCase();
 		if (val === "true") {
@@ -125,8 +132,12 @@ function mergeItems<T = data.ArgItems>(into: T, from: data.ArgItems) {
 }
 type AliasesMap = {
 	[key: string]: Array<string>;
-}
-function loadAliases<T>(aliases: data.Aliases<T>, items: AliasesMap = {}, parents: Array<string> = []): AliasesMap {
+};
+function loadAliases<T>(
+	aliases: data.Aliases<T>,
+	items: AliasesMap = {},
+	parents: Array<string> = []
+): AliasesMap {
 	if (!aliases) {
 		return items;
 	}
@@ -142,8 +153,12 @@ function loadAliases<T>(aliases: data.Aliases<T>, items: AliasesMap = {}, parent
 }
 type DefaultsMap = {
 	[key: string]: number | boolean | string;
-}
-function loadDefaults<T>(defaults1: data.Defaults<T>, items: DefaultsMap = {}, parents: Array<string> = []): DefaultsMap {
+};
+function loadDefaults<T>(
+	defaults1: data.Defaults<T>,
+	items: DefaultsMap = {},
+	parents: Array<string> = []
+): DefaultsMap {
 	if (defaults1 === undefined) {
 		return items;
 	}

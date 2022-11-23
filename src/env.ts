@@ -6,43 +6,63 @@ import * as fs from "fs";
 const file = ".env";
 export type ParsedEnv = {
 	$: data.ArgItems;
-}
+	used: boolean;
+};
 function createParsedEnv(): ParsedEnv {
 	return {
-		$: {}
-	}
+		$: {},
+		used: false,
+	};
 }
 export function parse<T>(content: string | Buffer, opts: data.EnvfullOptions<T> = {}): ParsedEnv {
 	const env = createParsedEnv();
-	content.toString().split(data.NEWLINES_MATCH).forEach(function (line) {
-		const attrs = line.match(data.ENV_KEY_VAL);
-		if (attrs != null) {
-			let [stringKey, val] = [attrs[1], attrs[2] || ""];
-			val = val.trim();
-			val = removeSingleQuotes(val);
-			val = removeDoubleQuotes(val);
-			const [where, key] = utils.loadWhere(env.$, utils.loadKey(opts, stringKey));
-			where[key] = utils.value(where[key], utils.loadValue(opts, stringKey, val));
-		}
-	});
+	content
+		.toString()
+		.split(data.NEWLINES_MATCH)
+		.forEach(function (line) {
+			const attrs = line.match(data.ENV_KEY_VAL);
+			if (attrs != null) {
+				const stringKey = attrs[1];
+				let val = attrs[2] || "";
+				val = val.trim();
+				val = removeSingleQuotes(val);
+				val = removeDoubleQuotes(val);
+				const [where, key] = utils.loadWhere(env.$, utils.loadKey(opts, stringKey));
+				where[key] = utils.value(where[key], utils.loadValue(opts, stringKey, val));
+				env.used = true;
+			}
+		});
 	return env;
 }
-export function enrich<T>(env: ParsedEnv, currentEnv: ProcessEnv, opts: data.EnvfullOptions<T> = {}): ParsedEnv {
+export function enrich<T>(
+	env: ParsedEnv,
+	currentEnv: ProcessEnv,
+	opts: data.EnvfullOptions<T> = {}
+): ParsedEnv {
 	loadEnvVariables(currentEnv, opts).forEach((stringKey) => {
 		const [where, key] = utils.loadWhere(env.$, utils.loadKey(opts, stringKey));
 		if (currentEnv[stringKey] !== undefined) {
-			where[key] = utils.value(undefined, utils.loadValue(opts, stringKey, currentEnv[stringKey]!));
+			where[key] = utils.value(
+				undefined,
+				utils.loadValue(opts, stringKey, currentEnv[stringKey] || "")
+			);
 		}
 	});
 	return env;
 }
 export function load<T>(directory: string, opts: data.EnvfullOptions<T> = {}): ParsedEnv {
-	const envPath = path.resolve(directory, file);
-	const envEncoding = 'utf8';
+	const envPath = envFile(directory);
+	const envEncoding = "utf8";
 	const data = loadData(envPath, envEncoding);
 	return parse(data, opts);
 }
-function loadEnvVariables<T>(currentEnv: ProcessEnv, opts: data.EnvfullOptions<T> = {}): Array<string> {
+export function envFile(directory: string): string {
+	return path.resolve(directory, file);
+}
+function loadEnvVariables<T>(
+	currentEnv: ProcessEnv,
+	opts: data.EnvfullOptions<T> = {}
+): Array<string> {
 	const envVariables = Object.keys(currentEnv);
 	if (opts.env && opts.env.length > 0) {
 		const keys = opts.env.filter((env) => typeof env === "string") as Array<string>;
@@ -74,7 +94,7 @@ function removeDoubleQuotes(value: string): string {
 	}
 	return val.replace(data.ENV_NEWLINES, data.ENV_NEWLINE);
 }
-function loadData(path: string, encoding: string): string {
+function loadData(path: string, encoding: BufferEncoding): string {
 	let data: string;
 	try {
 		data = fs.readFileSync(path, { encoding });

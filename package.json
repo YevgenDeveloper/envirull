@@ -1,6 +1,6 @@
 {
   "name": "envfull",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "author": "Stanislav Hacker",
   "keywords": [
@@ -25,6 +25,8 @@
     "servant": "servant",
     "clean": "servant clean",
     "build": "servant clean build",
+    "validate": "servant validate",
+    "fix": "servant validate --fix",
     "rebuild": "servant clean build --changed",
     "watch": "servant --watch",
     "production": "servant clean build --production",
@@ -44,7 +46,9 @@
     "url": "https://gitlab.com/stanislavhacker/envfull/issues"
   },
   "devDependencies": {
-    "@servant/servant-cli": "^0.2.3",
-    "@types/node": "^12.19.3"
+    "@servant/servant-cli": "^1.0.2",
+    "@types/node": "^14.18.33",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7"
   }
 }
